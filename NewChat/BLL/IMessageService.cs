@@ -1,4 +1,4 @@
-using NewChat.DAL.Entities;
+using System.Collections.Generic;
 
 namespace NewChat.BLL;
 

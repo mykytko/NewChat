@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace NewChat.DAL;
 
 public interface IGenericRepository<T> where T : class
