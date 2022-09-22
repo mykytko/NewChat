@@ -6,14 +6,8 @@ namespace NewChat.DAL;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly ChatsContext _context;
-    private readonly DbSet<T> _entities;
-
-    public GenericRepository(ChatsContext context)
-    {
-        _context = context;
-        _entities = context.Set<T>();
-    }
+    private readonly DbSet<T> _entities = null!;
+    public ChatsContext Context { get; set; } = null!;
 
     public IEnumerable<T> GetAll()
     {
@@ -33,7 +27,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void Update(T obj)
     {
         _entities.Attach(obj);
-        _context.Entry(obj).State = EntityState.Modified;
+        Context.Entry(obj).State = EntityState.Modified;
     }
 
     public void Delete(T obj)

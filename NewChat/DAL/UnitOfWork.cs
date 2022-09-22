@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace NewChat.DAL;
 
-public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext, new()
+public class UnitOfWork : IUnitOfWork
 {
     private IDbContextTransaction _objTran = null!;
     private Dictionary<string, object>? _repositories;
+    private readonly IServiceProvider _serviceProvider;
 
-    public TContext Context { get; }
+    public ChatsContext Context { get; }
 
-    public UnitOfWork()
+    public UnitOfWork(IServiceProvider serviceProvider)
     {
-        Context = new TContext();
+        _serviceProvider = serviceProvider;
+        Context = new ChatsContext();
     }
 
     public void CreateTransaction()
@@ -38,7 +39,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbCon
         Context.SaveChanges();
     }
 
-    public GenericRepository<T> GenericRepository<T>() where T : class
+    public T GetRepository<T>() where T : IRepository
     {
         _repositories ??= new Dictionary<string, object>();
 
@@ -46,13 +47,12 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbCon
 
         if (_repositories.ContainsKey(type))
         {
-            return (GenericRepository<T>) _repositories[type];
+            return (T) _repositories[type];
         }
         
-        var repositoryType = typeof(GenericRepository<T>);
-        var repositoryInstance = 
-            Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), Context)!;
-        _repositories.Add(type, repositoryInstance);
-        return (GenericRepository<T>) _repositories[type];
+        var instance = (T) _serviceProvider.GetService(typeof(T))!;
+        instance.Context = Context;
+        _repositories.Add(type, instance);
+        return (T) _repositories[type];
     }
 }

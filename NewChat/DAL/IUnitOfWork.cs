@@ -2,11 +2,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NewChat.DAL;
 
-public interface IUnitOfWork<out TContext> where TContext : DbContext, new()
+public interface IUnitOfWork
 {
-    TContext Context { get; }
+    ChatsContext Context { get; }
     void CreateTransaction();
     void Commit();
     void Rollback();
     void Save();
+    T GetRepository<T>() where T : IRepository;
 }

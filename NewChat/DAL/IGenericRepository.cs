@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace NewChat.DAL;
 
-public interface IGenericRepository<T> where T : class
+public interface IGenericRepository<T> : IRepository where T : class
 {
     IEnumerable<T> GetAll();
     T? GetById(int id);
