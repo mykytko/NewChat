@@ -1,15 +1,7 @@
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-
 namespace NewChat.DAL.Entities;
 
-public class Chat : BaseEntity
+public class Chat
 {
+    public int Id { get; set; }
     public string Name { get; set; }
-    
-    [JsonIgnore]
-    public ICollection<Message> Messages { get; set; }
-    
-    [JsonIgnore]
-    public ICollection<User> Members { get; set; }
 }

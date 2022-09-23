@@ -1,13 +1,27 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace NewChat.DAL;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly DbSet<T> _entities = null!;
-    public ChatsContext Context { get; set; } = null!;
+    private DbSet<T> _entities;
+    private ChatsContext _context;
+
+    public ChatsContext Context
+    {
+        get => _context;
+        set
+        {
+            _context = value;
+            _entities = _context.Set<T>();
+        }
+    }
+
+    public GenericRepository(IServiceProvider serviceProvider)
+    {
+        _context = (ChatsContext) serviceProvider.GetService(typeof(ChatsContext))!;
+        _entities = _context.Set<T>();
+    }
 
     public IEnumerable<T> GetAll()
     {

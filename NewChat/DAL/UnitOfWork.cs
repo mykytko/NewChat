@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace NewChat.DAL;
@@ -15,7 +13,7 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        Context = new ChatsContext();
+        Context = (ChatsContext) serviceProvider.GetService(typeof(ChatsContext))!;
     }
 
     public void CreateTransaction()

@@ -1,33 +1,20 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewChat.BLL;
 using NewChat.DAL.Entities;
+using NewChat.ViewModels;
 
 namespace NewChat.Controllers;
 
 public class AuthController : Controller
 {
-    private IAuthService _authService;
-    
-    public AuthController(IAuthService authService)
+    private readonly IAccountService _accountService;
+
+    public AuthController(IAccountService accountService)
     {
-        _authService = authService;
+        _accountService = accountService;
     }
     
-    [HttpPost, Route("/auth/login")]
-    public IActionResult Login([FromBody] User user)
-    {
-        var identity = _authService.Authorize(user);
-        if (identity == null)
-        {
-            return Unauthorized();
-        }
-
-        var response = new
-        {
-            access_token = identity,
-            username = user.Login
-        };
-
-        return Json(response);
-    }
+    
 }
