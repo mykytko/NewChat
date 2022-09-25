@@ -10,6 +10,5 @@ public interface IAccountService
     Task<bool> IsValidUserCredentials(LoginViewModel model);
     Task<IdentityResult> Register(LoginViewModel model);
     Task<LoginResult> Login(LoginViewModel model);
-    void Logout();
     Task<IdentityResult> ChangePassword(HttpContext context, string newPassword);
 }

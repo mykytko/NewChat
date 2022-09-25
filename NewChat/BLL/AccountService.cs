@@ -63,11 +63,6 @@ public class AccountService : IAccountService
         return new LoginResult(encodedJwt, model.Login);
     }
 
-    public async void Logout()
-    {
-        await _signInManager.SignOutAsync();
-    }
-
     public async Task<IdentityResult> ChangePassword(HttpContext context, string newPassword)
     {
         var user = await _userManager.FindByNameAsync(context.User.Identity!.Name);
