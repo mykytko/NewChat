@@ -7,9 +7,9 @@ namespace NewChat.DAL;
 
 public class ChatsContext : DbContext
 {
-    public DbSet<Chat> Chats { get; set; }
-    public DbSet<Message> Messages { get; set; }
-    public DbSet<IdentityUser> Users { get; set; }
+    public DbSet<Chat> Chats { get; set; } = null!;
+    public DbSet<Message> Messages { get; set; } = null!;
+    public DbSet<IdentityUser> Users { get; set; } = null!;
 
     private readonly IConfiguration _config;
 

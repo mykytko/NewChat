@@ -6,20 +6,23 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using NewChat.BLL;
 using NewChat.DAL;
 using NewChat.DAL.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
+builder.Services.AddTransient<IAuthOptions, AuthOptions>();
 builder.Services.AddDbContext<ChatsContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddTransient<GenericRepository<IdentityUser>>();
-builder.Services.AddTransient<GenericRepository<Message>>();
-builder.Services.AddTransient<GenericRepository<Chat>>();
+builder.Services.AddTransient<IGenericRepository<IdentityUser>, GenericRepository<IdentityUser>>();
+builder.Services.AddTransient<IGenericRepository<Message>, GenericRepository<Message>>();
+builder.Services.AddTransient<IGenericRepository<Chat>, GenericRepository<Chat>>();
 
-builder.Services.AddTransient<UnitOfWork>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IAccountService, AccountService>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {

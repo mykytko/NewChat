@@ -1,7 +1,3 @@
 namespace NewChat.ViewModels;
 
-public class UserViewModel
-{
-    public string Login { get; set; }
-    public string Password { get; set; }
-}
+public record UserViewModel(string Login, string Password);

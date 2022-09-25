@@ -1,13 +1,15 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using NewChat.ViewModels;
 
 namespace NewChat.BLL;
 
 public interface IAccountService
 {
-    Task<IEnumerable<IdentityError>> Register(string login, string password);
-    Task<bool> Login(string login, string password);
-    Task Logout();
-    Task<IEnumerable<IdentityError>> ChangePassword(HttpContext context, string oldPassword, string newPassword);
+    Task<bool> IsValidUserCredentials(LoginViewModel model);
+    Task<IdentityResult> Register(LoginViewModel model);
+    Task<LoginResult> Login(LoginViewModel model);
+    void Logout();
+    Task<IdentityResult> ChangePassword(HttpContext context, string newPassword);
 }
