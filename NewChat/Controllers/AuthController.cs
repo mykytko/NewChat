@@ -61,7 +61,8 @@ public class AuthController : Controller
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost]
     [Route("/auth/change")]
-    public async Task<IActionResult> ChangePassword([FromBody] PasswordChangeViewModel model)
+    public async Task<IActionResult> ChangePassword(
+        [FromBody] PasswordChangeViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -75,11 +76,13 @@ public class AuthController : Controller
             return Unauthorized();
         }
 
-        var changeResult = await _accountService.ChangePassword(HttpContext, model.NewPassword);
+        var changeResult = await _accountService.ChangePassword(
+            HttpContext, model.NewPassword);
 
         if (changeResult.Succeeded)
         {
-            return Ok(await _accountService.Login(new LoginViewModel(login, model.NewPassword)));
+            return Ok(await _accountService.Login(
+                new LoginViewModel(login, model.NewPassword)));
         }
 
         foreach (var error in changeResult.Errors)

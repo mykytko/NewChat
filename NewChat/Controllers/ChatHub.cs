@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -20,14 +19,17 @@ public class ChatHub : Hub
      
      public override async Task OnConnectedAsync()
      {
-          await Groups.AddToGroupAsync(Context.ConnectionId, Context.User!.Identity!.Name!);
+          await Groups.AddToGroupAsync(
+               Context.ConnectionId, Context.User!.Identity!.Name!);
           await base.OnConnectedAsync();
      }
 
      public async Task GetChats()
      {
-          var blocks = _blockService.GetBlocks(Context.User!.Identity!.Name!);
-          await Clients.Client(Context.ConnectionId).SendAsync("GetChats", blocks);
+          var blocks = 
+               _blockService.GetBlocks(Context.User!.Identity!.Name!);
+          await Clients.Client(Context.ConnectionId).SendAsync(
+               "GetChats", blocks);
      }
 
      public async Task GetMessages(int skip, string chatName)
@@ -41,7 +43,8 @@ public class ChatHub : Hub
      public async Task BroadcastMessage(string chatName, string messageText, 
           int replyTo, bool replyIsPersonal)
      {
-          var message = _messageService.SaveMessage(Context.User!.Identity!.Name!, chatName, 
+          var message = _messageService.SaveMessage(
+               Context.User!.Identity!.Name!, chatName, 
                messageText, replyTo, replyIsPersonal);
           if (message == null)
           {
@@ -50,8 +53,8 @@ public class ChatHub : Hub
 
           if (replyTo != -1 && replyIsPersonal)
           {
-               await Clients.Client(Context.ConnectionId)
-                    .SendAsync("BroadcastMessage", chatName, message);
+               await Clients.Client(Context.ConnectionId).SendAsync(
+                    "BroadcastMessage", chatName, message);
                
                var username = _messageService.GetMessageSender(replyTo);
                if (username == null)
@@ -61,13 +64,14 @@ public class ChatHub : Hub
                
                if (username != Context.User!.Identity!.Name)
                {
-                    await Clients.Group(username)
-                         .SendAsync("BroadcastMessage", chatName, message);
+                    await Clients.Group(username).SendAsync(
+                         "BroadcastMessage", chatName, message);
                }
           }
           else
           {
-               await Clients.All.SendAsync("BroadcastMessage", chatName, message);
+               await Clients.All.SendAsync(
+                    "BroadcastMessage", chatName, message);
           }
      }
 
@@ -84,13 +88,15 @@ public class ChatHub : Hub
 
      public async Task BroadcastDelete(int messageId)
      {
-          var chatName = _messageService.DeleteMessage(Context.User!.Identity!.Name!, messageId);
+          var chatName = _messageService.DeleteMessage(
+               Context.User!.Identity!.Name!, messageId);
           if (chatName == null)
           {
                return;
           }
           
-          await Clients.All.SendAsync("BroadcastDelete", chatName, messageId);
+          await Clients.All.SendAsync(
+               "BroadcastDelete", chatName, messageId);
      }
 
      public async Task DeleteLocally(int messageId)

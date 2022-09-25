@@ -10,7 +10,9 @@ public class UnitOfWork : IUnitOfWork
 
     public ChatsContext Context { get; }
 
-    public UnitOfWork(IServiceProvider serviceProvider, ChatsContext chatsContext)
+    public UnitOfWork(
+        IServiceProvider serviceProvider, 
+        ChatsContext chatsContext)
     {
         _serviceProvider = serviceProvider;
         Context = chatsContext;

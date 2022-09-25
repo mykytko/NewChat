@@ -1,3 +1,7 @@
 namespace NewChat.ViewModels;
 
-public record LoginResult(string AccessToken, string UserName);
+public record LoginResult
+(
+    string AccessToken, 
+    string UserName
+);

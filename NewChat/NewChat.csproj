@@ -25,7 +25,7 @@
       <Folder Include="DAL\Entities" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="appsettings.json" CopyToOutputDirectory="Always"/>
+        <None Include="appsettings.json" CopyToOutputDirectory="Always" />
     </ItemGroup>
 
 </Project>

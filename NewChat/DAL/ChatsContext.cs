@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,8 +9,9 @@ public class ChatsContext : IdentityDbContext
 {
     public DbSet<Chat> Chats { get; set; } = null!;
     public DbSet<Message> Messages { get; set; } = null!;
-    public DbSet<MessageDeletedForUser> MessagesDeletedForUsers { get; set; } = null!;
-    public DbSet<MemberChat> MembersChats { get; set; }
+    public DbSet<MessageDeletedForUser> MessagesDeletedForUsers { get; set; } 
+        = null!;
+    public DbSet<MemberChat> MembersChats { get; set; } = null!;
 
     private readonly IConfiguration _config;
 
@@ -26,15 +26,17 @@ public class ChatsContext : IdentityDbContext
         _config = config;
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(
+        DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(_config.GetConnectionString("Default"));
+            optionsBuilder.UseSqlServer(
+                _config.GetConnectionString("Default"));
         }
         
-        Console.WriteLine("Using " + _config.GetConnectionString("Default"));
-        optionsBuilder.UseSqlServer(_config.GetConnectionString("Default"));
+        optionsBuilder.UseSqlServer(
+            _config.GetConnectionString("Default"));
         base.OnConfiguring(optionsBuilder);
     }
 }

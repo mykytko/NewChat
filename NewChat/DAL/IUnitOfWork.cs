@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace NewChat.DAL;
 
 public interface IUnitOfWork

@@ -1,6 +1,7 @@
 namespace NewChat.DAL.Entities;
 
-public record MemberChat(
+public record MemberChat
+(
     int Id,
     string UserId,
     int ChatId

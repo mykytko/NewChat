@@ -1,9 +1,11 @@
 namespace NewChat.ViewModels;
 
-public record MessageView(
+public record MessageView
+(
     int Id,
     string Username,
     string Text,
     string Date,
     int ReplyTo,
-    bool ReplyIsPersonal);
+    bool ReplyIsPersonal
+);

@@ -1,6 +1,7 @@
 namespace NewChat.DAL.Entities;
 
-public record MessageDeletedForUser(
+public record MessageDeletedForUser
+(
     int Id,
     int MessageId,
     string UserId

@@ -1,7 +1,9 @@
 namespace NewChat.ViewModels;
 
-public record ChatView(
+public record ChatView
+(
     string ChatName,
     string LastMessageSender,
     string LastMessageText,
-    bool IsPersonal);
+    bool IsPersonal
+);
