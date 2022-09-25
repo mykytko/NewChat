@@ -10,7 +10,7 @@ public class AuthOptions : IAuthOptions
 
     public string Issuer => _jwt["Issuer"];
     public string Audience => _jwt["Audience"];
-    public SymmetricSecurityKey Key => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt["Key"]));
+    public SymmetricSecurityKey Key => new(Encoding.UTF8.GetBytes(_jwt["Key"]));
     public int Lifetime => int.Parse(_jwt["Lifetime"]);
 
     public AuthOptions(IConfiguration configuration)

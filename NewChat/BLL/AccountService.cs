@@ -13,7 +13,8 @@ public class AccountService : IAccountService
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IAuthOptions _authOptions;
     
-    public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+    public AccountService(UserManager<IdentityUser> userManager, 
+        SignInManager<IdentityUser> signInManager,
         IAuthOptions authOptions)
     {
         _userManager = userManager;
@@ -24,7 +25,13 @@ public class AccountService : IAccountService
     public async Task<bool> IsValidUserCredentials(LoginViewModel model)
     {
         var user = await _userManager.FindByNameAsync(model.Login);
-        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+        if (user == null)
+        {
+            return false;
+        }
+        
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(
+            user, model.Password, false);
         return signInResult.Succeeded;
     }
 
@@ -47,7 +54,8 @@ public class AccountService : IAccountService
 
         if (roles != null)
         {
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            claims.AddRange(roles.Select(role => 
+                new Claim(ClaimTypes.Role, role)));
         }
         
         var now = DateTime.UtcNow;
@@ -57,7 +65,8 @@ public class AccountService : IAccountService
             notBefore: now,
             claims: claims,
             expires: now.AddDays(_authOptions.Lifetime),
-            signingCredentials: new SigningCredentials(_authOptions.Key, SecurityAlgorithms.HmacSha256));
+            signingCredentials: new SigningCredentials(_authOptions.Key, 
+                SecurityAlgorithms.HmacSha256));
         var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
         return new LoginResult(encodedJwt, model.Login);

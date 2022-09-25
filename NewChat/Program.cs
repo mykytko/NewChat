@@ -31,6 +31,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     }).AddEntityFrameworkStores<ChatsContext>()
     .AddDefaultTokenProviders();
 
+var authOptions = new AuthOptions(builder.Configuration);
 builder.Services.AddAuthentication(auth =>
 {
     auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,16 +41,21 @@ builder.Services.AddAuthentication(auth =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
+        ValidIssuer = authOptions.Issuer,
         ValidateAudience = true,
+        ValidAudience = authOptions.Audience,
+        ValidateLifetime = true,
         RequireExpirationTime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-            builder.Configuration.GetSection("Jwt")["SecurityKey"]))
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = authOptions.Key
     };
 });
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 

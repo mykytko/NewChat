@@ -17,9 +17,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
     }
 
-    public GenericRepository(IServiceProvider serviceProvider)
+    public GenericRepository(ChatsContext chatsContext)
     {
-        _context = (ChatsContext) serviceProvider.GetService(typeof(ChatsContext))!;
+        _context = chatsContext;
         _entities = _context.Set<T>();
     }
 

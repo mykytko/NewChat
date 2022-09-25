@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NewChat.DAL.Entities;
 
 namespace NewChat.DAL;
 
-public class ChatsContext : DbContext
+public class ChatsContext : IdentityDbContext
 {
     public DbSet<Chat> Chats { get; set; } = null!;
     public DbSet<Message> Messages { get; set; } = null!;
-    public DbSet<IdentityUser> Users { get; set; } = null!;
+    public DbSet<MessageDeletedForUser> MessagesDeletedForUsers { get; set; } = null!;
+    public DbSet<MemberChat> MembersChats { get; set; }
 
     private readonly IConfiguration _config;
 
@@ -30,6 +32,9 @@ public class ChatsContext : DbContext
         {
             optionsBuilder.UseSqlServer(_config.GetConnectionString("Default"));
         }
+        
+        Console.WriteLine("Using " + _config.GetConnectionString("Default"));
+        optionsBuilder.UseSqlServer(_config.GetConnectionString("Default"));
         base.OnConfiguring(optionsBuilder);
     }
 }

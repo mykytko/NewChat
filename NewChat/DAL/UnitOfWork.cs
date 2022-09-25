@@ -10,10 +10,10 @@ public class UnitOfWork : IUnitOfWork
 
     public ChatsContext Context { get; }
 
-    public UnitOfWork(IServiceProvider serviceProvider)
+    public UnitOfWork(IServiceProvider serviceProvider, ChatsContext chatsContext)
     {
         _serviceProvider = serviceProvider;
-        Context = (ChatsContext) serviceProvider.GetService(typeof(ChatsContext))!;
+        Context = chatsContext;
     }
 
     public void CreateTransaction()

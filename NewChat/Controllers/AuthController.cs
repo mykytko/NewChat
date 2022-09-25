@@ -16,6 +16,8 @@ public class AuthController : Controller
     }
     
     [AllowAnonymous]
+    [HttpPost]
+    [Route("/auth/register")]
     public async Task<IActionResult> Register([FromBody] LoginViewModel model)
     {
         if (!ModelState.IsValid)
@@ -39,6 +41,8 @@ public class AuthController : Controller
     }
 
     [AllowAnonymous]
+    [HttpPost]
+    [Route("/auth/login")]
     public async Task<IActionResult> Login([FromBody] LoginViewModel model)
     {
         if (!ModelState.IsValid)
@@ -55,6 +59,8 @@ public class AuthController : Controller
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPost]
+    [Route("/auth/change")]
     public async Task<IActionResult> ChangePassword([FromBody] PasswordChangeViewModel model)
     {
         if (!ModelState.IsValid)

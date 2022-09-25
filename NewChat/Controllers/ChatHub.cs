@@ -32,12 +32,14 @@ public class ChatHub : Hub
 
      public async Task GetMessages(int skip, string chatName)
      {
-          var messages = 
-               _messageService.GetMessageBatch(Context.User!.Identity!.Name!, skip, chatName);
-          await Clients.Client(Context.ConnectionId).SendAsync("GetMessages", chatName, messages);
+          var messages = _messageService.GetMessageBatch(
+               Context.User!.Identity!.Name!, skip, chatName);
+          await Clients.Client(Context.ConnectionId).SendAsync(
+               "GetMessages", chatName, messages);
      }
 
-     public async Task BroadcastMessage(string chatName, string messageText, int replyTo, bool replyIsPersonal)
+     public async Task BroadcastMessage(string chatName, string messageText, 
+          int replyTo, bool replyIsPersonal)
      {
           var message = _messageService.SaveMessage(Context.User!.Identity!.Name!, chatName, 
                messageText, replyTo, replyIsPersonal);
@@ -71,10 +73,12 @@ public class ChatHub : Hub
 
      public async Task BroadcastEdit(int messageId, string messageText)
      {
-          var chatName = _messageService.EditMessage(Context.User!.Identity!.Name!, messageId, messageText);
+          var chatName = _messageService.EditMessage(
+               Context.User!.Identity!.Name!, messageId, messageText);
           if (chatName != null)
           {
-               await Clients.All.SendAsync("BroadcastEdit", chatName, messageId, messageText);
+               await Clients.All.SendAsync("BroadcastEdit", 
+                    chatName, messageId, messageText);
           }
      }
 
@@ -91,12 +95,14 @@ public class ChatHub : Hub
 
      public async Task DeleteLocally(int messageId)
      {
-          var chatName = _messageService.DeleteMessageForUser(Context.User!.Identity!.Name!, messageId);
+          var chatName = _messageService.DeleteMessageForUser(
+               Context.User!.Identity!.Name!, messageId);
           if (chatName == null)
           {
                return;
           }
           
-          await Clients.Client(Context.ConnectionId).SendAsync("BroadcastDelete", chatName, messageId);
+          await Clients.Client(Context.ConnectionId).SendAsync(
+               "BroadcastDelete", chatName, messageId);
      }
 }
